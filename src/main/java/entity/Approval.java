@@ -1,49 +1,62 @@
 package entity;
 
-import java.time.LocalDate;
-import java.util.Date;
-
+import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
-import com.googlecode.objectify.annotation.Index;
-
+ 
 @Entity
+@Cache
 public class Approval {
-    @Id Long id;
-    @Index String name;
-    @Index Boolean risk;
-    @Index Float amount;
-    @Index Date createdAt;
-    @Index Boolean decision;
+	@Id private Long id;
+	private String nom;
+	private float montant;
+	private boolean risk;
+	private boolean decision;
+	
+	public Approval() {}
+	
+	public Approval(String nom, float montant, boolean risk, boolean decision) {	
+		this.setNom(nom);
+		this.setMontant(montant);
+		this.setRisk(risk);
+		this.setDecision(decision);
+	}
+	
+	@Override
+	public String toString() {
+		return "demande de: " + getNom() + " pour un montant de: " + getMontant() + " et un risque: " + isRisk() + " et une decision: " + isDecision();
+	}
 
-    public Approval() {}
-    
-    public Approval(String name, Boolean risk, Float amount, Boolean decision ) {
-    	this.name = name;
-    	this.risk = risk;
-    	this.amount = amount;
-    	this.decision = decision;
-    	this.createdAt = new Date();
-    }
-    
-    public String getName() {
-        return name;
-    }
-    
-    public Boolean getRisk() {
-    	return risk;
-    }
-    
-    public Float getAmount() {
-    	return amount;
-    }
-    
-    public Date getCreatedAt() {
-    	return createdAt;
-    }
-    
-    public Boolean getDecision() {
-    	return decision;
-    }
-    
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public float getMontant() {
+		return montant;
+	}
+
+	public void setMontant(float montant) {
+		this.montant = montant;
+	}
+
+	public boolean isRisk() {
+		return risk;
+	}
+
+	public void setRisk(boolean risk) {
+		this.risk = risk;
+	}
+
+	public boolean isDecision() {
+		return decision;
+	}
+
+	public void setDecision(boolean decision) {
+		this.decision = decision;
+	}
+
 }
