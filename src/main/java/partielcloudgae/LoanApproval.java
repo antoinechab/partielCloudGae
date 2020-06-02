@@ -32,63 +32,57 @@ public class LoanApproval extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		try {
 			int somme = Integer.parseInt(request.getParameter("somme"));
-			//todo appel accManager pour avoir risk
+			
 			String id = request.getParameter("id");
 			
-			URLConnection connection = new URL("https://partiecloud.herokuapp.com/AccManager/"+id).openConnection();
-			InputStream reulst = connection.getInputStream();
-			String test = reulst.toString();
-		
-			//test
-			response.setStatus(200);
-			response.getWriter().append("test"+ test);
+			URLConnection connection = new URL("https://partielcloud.herokuapp.com/AccManager/"+id).openConnection();
+			InputStream result = connection.getInputStream();
+			String compte = result.toString();
 			
-//			int risk = 1;
-//			
-//			AppManager am = new AppManager();
-//			
-//			String nomApproval = request.getParameter("nom");
-//    		int montantApproval = Integer.parseInt(request.getParameter("montant"));
-//    		boolean  riskApproval = Boolean.parseBoolean(request.getParameter("risk"));
-//    		boolean  decisionApproval = Boolean.parseBoolean(request.getParameter("decision"));
-//			
-//			if(somme>=1000 || risk == 1) {
-//				boolean decision = am.requeteApproval();
-//				if(decision == true) {
-//					Approval app = am.createApproval(nomApproval, montantApproval,riskApproval,decisionApproval);
-//					reader.close();
-//					response.setStatus(200);
-//					response.getWriter().append("approved");
-//				
-//				}else {
-//					reader.close();
-//					response.getWriter().append("disapproved");
-//				}
-//			}else {			
-//				if(risk == 1) {
-//					boolean decision = am.requeteApproval();
-//					
-//					if(decision == true) {
-//						Approval app = am.createApproval(nomApproval, montantApproval,riskApproval,decisionApproval);
-//						reader.close();
-//						response.setStatus(200);
-//						response.getWriter().append("approved");
-//					
-//					}else {
-//						reader.close();
-//						response.getWriter().append("disapproved");
-//					}
-//				}else {
-//					Approval app = am.createApproval(nomApproval, montantApproval,riskApproval,decisionApproval);
-//					
-//					//todo appel accManager
-//					float montant = 222;
-//				
-//					reader.close();
-//					response.setStatus(200);
-//					response.getWriter().append("approved et somme a: "+ montant);
-//				}
-//			}
+			//le compte doit retourner un json pour que je puisse le traiter
+			
+//			int risk = compte.risk;
+			int risk = 1;
+			
+			AppManager am = new AppManager();
+			
+			String nomApproval = request.getParameter("nom");
+    		int montantApproval = Integer.parseInt(request.getParameter("montant"));
+    		boolean  riskApproval = Boolean.parseBoolean(request.getParameter("risk"));
+    		boolean  decisionApproval = Boolean.parseBoolean(request.getParameter("decision"));
+			
+			if(somme>=1000 || risk == 1) {
+				boolean decision = am.requeteApproval();
+				if(decision == true) {
+					Approval app = am.createApproval(nomApproval, montantApproval,riskApproval,decisionApproval);
+					response.setStatus(200);
+					response.getWriter().append("approved");
+				
+				}else {
+					response.getWriter().append("disapproved");
+				}
+			}else {			
+				if(risk == 1) {
+					boolean decision = am.requeteApproval();
+					
+					if(decision == true) {
+						Approval app = am.createApproval(nomApproval, montantApproval,riskApproval,decisionApproval);
+						response.setStatus(200);
+						response.getWriter().append("approved");
+					
+					}else {
+						response.getWriter().append("disapproved");
+					}
+				}else {
+					Approval app = am.createApproval(nomApproval, montantApproval,riskApproval,decisionApproval);
+					
+//					float montant = compte.montant;
+					float montant = 666;
+				
+					response.setStatus(200);
+					response.getWriter().append("approved et somme a: "+ montant);
+				}
+			}
 			
 		}catch(NumberFormatException e ){
 			response.setStatus(415);
